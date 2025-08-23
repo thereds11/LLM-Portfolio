@@ -1,58 +1,43 @@
-# Project 1: Local LLM Chat
+# Project 1: Local LLM Chat (FastAPI + SPA)
 
-This project implements a simple chat application using Streamlit, allowing users to interact with various locally hosted Large Language Models (LLMs) via Ollama. It demonstrates how to integrate local LLMs into a user-friendly interface for conversational AI.
+This project provides a small backend (FastAPI) that calls local LLMs via Ollama, and a tiny single-page app (SPA) in `frontend/` that talks to the backend.
 
-## Purpose
+## What changed
 
-The primary goal of this project is to provide a straightforward way to experiment with and utilize local LLMs without relying on external API services. It showcases the capabilities of Ollama for serving models like Llama3, Phi3, and Mistral, and how to build a basic chat interface around them.
+- Replaced Streamlit UI with a static SPA in `frontend/` (`index.html`, `main.js`, `styles.css`).
+- `app.py` is now a FastAPI server exposing a `/chat` endpoint.
+- `requirement.txt` updated with `fastapi` + `uvicorn`.
 
-## How to Run
+## Quick start (Windows PowerShell)
 
-1.  **Install Ollama:**
-    Download and install Ollama from [ollama.com](https://ollama.com/).
-2.  **Download LLM Models:**
-    Pull the desired models using Ollama. For example:
-    ```bash
-    ollama pull llama3
-    ollama pull phi3
-    ollama pull mistral
-    ```
-3.  **Navigate to the project directory:**
-    ```bash
-    cd D:/Sirius/projects/AI_Portfolio/project1_localllmChat
-    ```
-4.  **Create and activate a virtual environment:**
-    ```bash
-    python -m venv venv
-    # On Windows
-    .\venv\Scripts\activate
-    # On macOS/Linux
-    source venv/bin/activate
-    ```
-5.  **Install dependencies:**
-    ```bash
-    pip install streamlit llama-index-llms-ollama
-    ```
-    *(Note: A `requirements.txt` is not provided in this specific project, so these are the core dependencies based on `app.py`)*
-6.  **Run the Streamlit application:**
-    ```bash
-    streamlit run app.py
-    ```
-    This will open the application in your web browser.
+1) Install Ollama and pull models you want, e.g.:
+```powershell
+ollama pull llama3; ollama pull phi3; ollama pull mistral
+```
 
-## Techniques Used
+2) Create & activate venv, install deps:
+```powershell
+python -m venv .venv; .\.venv\Scripts\Activate.ps1; pip install -r requirement.txt
+```
 
-*   **Streamlit:** Used for building the interactive web-based user interface.
-*   **Ollama:** Serves as the local LLM runtime, providing an API to interact with various open-source models.
-*   **LlamaIndex:** Utilized for its `Ollama` LLM integration and `ChatMessage` handling for conversational turns.
-*   **Streaming Responses:** The application streams responses from the LLM for a better user experience.
+3) Run the backend:
+```powershell
+python app.py
+```
 
-## Issues and Considerations
+4) Open the SPA: open `frontend/index.html` in your browser (double-click or right-click -> Open). The SPA talks to the backend at `http://localhost:8000`.
 
-*   **Performance:** The performance of the chat application is highly dependent on your local hardware (CPU, RAM) and the size/complexity of the chosen LLM.
-*   **Ollama Setup:** Ensure Ollama is running and the required models are pulled before starting the application.
-*   **Model Availability:** The list of models in the sidebar (`llama3`, `phi3`, `mistral`) assumes these models are available via your Ollama instance.
+Notes:
+- Ensure Ollama is running and models are available. The SPA connects to `/ws/chat` for streaming responses.
+- The frontend is now a React + Vite app using Chakra UI located in `frontend/`. To run it in dev mode you'll need Node.js and npm.
 
-## Contributions
+Frontend dev:
+```powershell
+cd frontend
+npm install
+npm run dev
+```
 
-Feel free to contribute to this project by opening issues or submitting pull requests.
+Or build for production and serve the `dist/` from the backend static files if desired.
+
+Contributions and improvements are welcome.
